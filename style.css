@@ -6,8 +6,8 @@
 }
 body {
   background-color: rgb(52, 48, 68);
-  padding-left: 80px;
-  padding-right: 80px;
+  padding-left: 150px;
+  padding-right: 150px;
 }
 main {
   text-align: center;
@@ -32,17 +32,14 @@ h2 {
 }
 #title {
   margin-top: 15px;
-  width: 90%;
+  width: 100%;
   height: 40px;
   background-color: rgb(39, 39, 39);
   border: none;
   outline: none;
   padding-left: 20px;
 }
-#title:focus {
-  width: 100%;
-  height: 45px;
-}
+
 table {
   width: 100%;
   text-align: center;
@@ -96,3 +93,164 @@ select,
 textarea {
   color: white;
 }
+#count {
+  margin-top: 15px;
+  width: 100%;
+  height: 40px;
+  background-color: rgb(39, 39, 39);
+  border: none;
+  outline: none;
+  padding-left: 20px;
+}
+#category {
+  margin-top: 15px;
+  width: 100%;
+  height: 40px;
+  background-color: rgb(39, 39, 39);
+  border: none;
+  outline: none;
+  padding-left: 20px;
+}
+#create-btn {
+  margin-top: 15px;
+  width: 100%;
+  height: 35px;
+  background-color: rgb(88, 25, 105);
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-family: "Roboto", sans-serif;
+
+  outline: none;
+}
+#create-btn:hover {
+  cursor: pointer;
+  background-color:rgb(106, 18, 130) ;
+
+}
+#search {
+  margin-top: 15px;
+  width: 100%;
+  height: 40px;
+  background-color: rgb(39, 39, 39);
+  border: none;
+  outline: none;
+  padding-left: 20px;
+}
+#search-by-title-btn {
+  margin-top: 15px;
+  width: 35%;
+  height: 25px;
+  background-color: rgb(88, 25, 105);
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-family: "cairo";
+  outline: none;
+  padding-left: 20px;
+  padding-bottom: 35px;
+  margin-right: 10px;
+}
+#search-by-title-btn:hover{
+  background-color:rgb(106, 18, 130) ;
+
+}
+#search-by-category-btn:hover{
+  background-color:rgb(106, 18, 130) ;
+
+}
+
+#search-by-category-btn {
+  margin-top: 15px;
+  width: 35%;
+  height: 25px;
+  background-color: rgb(88, 25, 105);
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-family: "cairo";
+  outline: none;
+  padding-left: 20px;
+  padding-bottom: 35px;
+  margin-left: 10px;
+}
+
+#delete-all-btn {
+  margin-top: 15px;
+  width: 100%;
+  height: 25px;
+  background-color: rgb(88, 25, 105);
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-family: "cairo";
+  outline: none;
+  padding-left: 20px;
+  padding-bottom: 35px;
+}
+#delete-all-btn:hover{
+  background-color:rgb(106, 18, 130) ;
+ 
+}
+table {
+  border: none;
+  margin-top: 15px;
+}
+#total-txt {
+  color: white;
+  font-size: 18px;
+  font-family: "Roboto", sans-serif;
+  margin-left: 5px;
+
+}
+th {
+}
+table {
+  width: 100%;
+  position: relative;
+}
+.total {
+  color: white;
+  font-size: 15px;
+  font-family: "Roboto", sans-serif;
+}
+td {
+  height: 30px;
+  font-size: 16px;
+  color: white;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  border-top: solid rgba(255, 255, 255, 0.344) 1px;
+}
+th {
+  height: 30px;
+  font-size: 18px;
+  color: white;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+}
+button:hover{
+cursor: pointer;
+}
+.update-btn{
+background-color: rgb(88, 25, 105);
+width: 70%;
+border: none;
+color: white;
+height: 75%;
+border-radius: 10px;
+}
+.delete-btn{
+  background-color: rgb(88, 25, 105);
+  width: 70%;
+  border: none;
+  color: white;
+  height: 75%;
+  border-radius: 10px;}
+  button:hover{
+background-color:rgb(106, 18, 130) ;
+  }
