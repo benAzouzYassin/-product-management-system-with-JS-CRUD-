@@ -1,4 +1,5 @@
 // variables
+const body = document.querySelector("body");
 const title = document.getElementById("title");
 const price = document.getElementById("price");
 const taxes = document.getElementById("taxes");
@@ -8,8 +9,47 @@ const total = document.querySelector(".total");
 const count = document.querySelector("#count");
 const category = document.querySelector("#category");
 const createBtn = document.querySelector("#create-btn");
+const productsTable = document.querySelector("table");
+const deleteAllBtn = document.querySelector("#delete-all-btn");
+const deleteBtn = document.querySelector(".delete-btn");
 let totalPrice = 0;
+
 // functions
+const renderProducts = () => {
+  productsTable.innerHTML = `<tr>
+  <th>ID</th>
+  <th>TITLE</th>
+  <th>PRICE</th>
+  <th>TAXES</th>
+  <th>ADS</th>
+  <th>DISCOUNT</th>
+  <th>TOTAL</th>
+  <th>CATEGORY</th>
+  <th>UPDATE</th>
+  <th>DELETE</th>
+</tr>`;
+  if (localStorage.getItem("products")) {
+    let currentProducts = JSON.parse(localStorage.getItem("products"));
+    for (const product of currentProducts) {
+      productsTable.innerHTML += `<tr>
+  <td>${product.id}</td>
+  <td>${product.title}</td>
+  <td>${product.price}</td>
+  <td>${product.taxes}</td>
+  <td>${product.ads}</td>
+  <td>${product.discount}</td>
+  <td>${product.total}</td>
+  <td>${product.category}</td>
+  <td><button class="update-btn">update</button></td>
+  <td><button class="delete-btn" onclick="deleteProduct(this)">delete</button></td>
+</tr>`;
+    }
+  }
+};
+const getSavedProducts = () => {
+  return localStorage.getItem("products");
+};
+
 const checkDiscount = (dis) => {
   if (dis == "") {
     return 0;
@@ -17,6 +57,7 @@ const checkDiscount = (dis) => {
     return dis;
   }
 };
+
 const getId = () => {
   if (localStorage.getItem("id")) {
     //check if id exists on the local storage
@@ -28,7 +69,17 @@ const getId = () => {
     return 0;
   }
 };
+
 // event listeners
+body.onload = () => {
+  if (!localStorage.getItem("products")) {
+    localStorage.setItem("products", JSON.stringify([]));
+    renderProducts();
+  } else {
+    renderProducts();
+  }
+};
+
 price.onkeyup = () => {
   if (
     !isNaN(price.value) &&
@@ -127,9 +178,11 @@ createBtn.onclick = () => {
     check = false;
   }
   if (check === true) {
+    let oldProducts = JSON.parse(localStorage.getItem("products"));
+    let newProducts = [].concat(oldProducts);
     //save the values into an object with the id and evreything
     for (let i = 0; i < Number(count.value); i++) {
-      console.log("will save it", {
+      newProducts = newProducts.concat({
         id: getId(),
         taxes: taxes.value,
         title: title.value,
@@ -140,7 +193,20 @@ createBtn.onclick = () => {
         total: totalPrice,
       });
     }
-  } else {
-    console.log("won't save it");
+    localStorage.setItem("products", JSON.stringify(newProducts)); //saves the new products in the local storage
   }
+  renderProducts();
 };
+deleteAllBtn.onclick = () => {
+  localStorage.clear();
+  renderProducts();
+};
+function deleteProduct(that) {
+  let productId = that.parentNode.parentNode.children[0].innerText; //the id of the product
+  let products = JSON.parse(localStorage.getItem("products"));
+  let filtredProducts = products.filter((obj) => {
+    return obj.id != productId;
+  });
+  localStorage.setItem("products", JSON.stringify(filtredProducts));
+  renderProducts();
+}
