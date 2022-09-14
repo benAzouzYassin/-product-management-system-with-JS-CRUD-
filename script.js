@@ -31,7 +31,8 @@ const renderProducts = () => {
   if (localStorage.getItem("products")) {
     let currentProducts = JSON.parse(localStorage.getItem("products"));
     for (const product of currentProducts) {
-      productsTable.innerHTML += `<tr>
+      if (product) {
+        productsTable.innerHTML += `<tr>
   <td>${product.id}</td>
   <td>${product.title}</td>
   <td>${product.price}</td>
@@ -43,6 +44,7 @@ const renderProducts = () => {
   <td><button class="update-btn">update</button></td>
   <td><button class="delete-btn" onclick="deleteProduct(this)">delete</button></td>
 </tr>`;
+      }
     }
   }
 };
@@ -65,8 +67,8 @@ const getId = () => {
     localStorage.setItem("id", JSON.stringify(current + 1));
     return current;
   } else {
-    localStorage.setItem("id", 1);
-    return 0;
+    localStorage.setItem("id", 2);
+    return 1;
   }
 };
 
@@ -205,7 +207,9 @@ function deleteProduct(that) {
   let productId = that.parentNode.parentNode.children[0].innerText; //the id of the product
   let products = JSON.parse(localStorage.getItem("products"));
   let filtredProducts = products.filter((obj) => {
-    return obj.id != productId;
+    if (obj) {
+      return obj.id != productId;
+    }
   });
   localStorage.setItem("products", JSON.stringify(filtredProducts));
   renderProducts();
