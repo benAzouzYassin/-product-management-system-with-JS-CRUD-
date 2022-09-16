@@ -128,7 +128,25 @@ const deleteProduct = (product) => {
     }
   });
   localStorage.setItem("products", JSON.stringify(filtredProducts));
-  renderProducts();
+
+  let productsFromSearch = JSON.parse(
+    localStorage.getItem("productsFromSearch")
+  );
+  let filtredProductsFromSearch = productsFromSearch.filter((obj) => {
+    if (obj) {
+      return obj.id != productId;
+    }
+  });
+  localStorage.setItem(
+    "productsFromSearch",
+    JSON.stringify(filtredProductsFromSearch)
+  );
+
+  if (searchField.value != "") {
+    renderProductsFromSearch();
+  } else {
+    renderProducts();
+  }
 };
 const updateProduct = (product) => {
   mode = "update";
@@ -311,7 +329,11 @@ createAndUpdateBtn.onclick = () => {
         }
       });
     localStorage.setItem("products", JSON.stringify(changedProducts));
-    renderProducts();
+    if (searchField.value != "") {
+      renderProductsFromSearch();
+    } else {
+      renderProducts();
+    }
     clearInputFields();
     mode = "create";
   }
@@ -334,7 +356,6 @@ searchField.onkeyup = () => {
     JSON.stringify(search(products, searchMode, searchField.value))
   );
   renderProductsFromSearch();
-  console.log(search(products, searchMode, searchField.value));
 };
 searchByTitleBtn.onclick = () => {
   searchMode = "title";
@@ -347,7 +368,6 @@ searchByTitleBtn.onclick = () => {
       JSON.stringify(search(products, searchMode, searchField.value))
     );
     renderProductsFromSearch();
-    console.log("should change");
   } else {
     renderProducts();
   }
@@ -363,7 +383,6 @@ searchByCategoryBtn.onclick = () => {
       JSON.stringify(search(products, searchMode, searchField.value))
     );
     renderProductsFromSearch();
-    console.log("should change");
   } else {
     renderProducts();
   }
