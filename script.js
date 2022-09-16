@@ -13,7 +13,11 @@ const productsTable = document.querySelector("table");
 const deleteAllBtn = document.querySelector("#delete-all-btn");
 const deleteBtn = document.querySelector(".delete-btn");
 const modeLabel = document.querySelector("#mode");
+const searchField = document.querySelector("#search");
+const searchByTitleBtn = document.querySelector("#search-by-title-btn");
+const searchByCategoryBtn = document.querySelector("#search-by-category-btn");
 let mode = "create";
+let searchMode = "title";
 let idForUpdating = undefined;
 let totalPrice = 0;
 
@@ -27,6 +31,41 @@ const clearInputFields = () => {
   count.value = "";
   category.value = "";
   total.innerText = "";
+};
+const renderProductsFromSearch = () => {
+  productsTable.innerHTML = `<tr>
+  <th>ID</th>
+  <th>TITLE</th>
+  <th>PRICE</th>
+  <th>TAXES</th>
+  <th>ADS</th>
+  <th>DISCOUNT</th>
+  <th>TOTAL</th>
+  <th>CATEGORY</th>
+  <th>UPDATE</th>
+  <th>DELETE</th>
+</tr>`;
+  if (localStorage.getItem("productsFromSearch")) {
+    let currentProducts = JSON.parse(
+      localStorage.getItem("productsFromSearch")
+    );
+    for (const product of currentProducts) {
+      if (product) {
+        productsTable.innerHTML += `<tr>
+  <td>${product.id}</td>
+  <td>${product.title}</td>
+  <td>${product.price}</td>
+  <td>${product.taxes}</td>
+  <td>${product.ads}</td>
+  <td>${product.discount}</td>
+  <td>${product.total}</td>
+  <td>${product.category}</td>
+  <td><button class="update-btn" onclick="updateProduct(this)">update</button></td>
+  <td><button class="delete-btn" onclick="deleteProduct(this)">delete</button></td>
+</tr>`;
+      }
+    }
+  }
 };
 const renderProducts = () => {
   productsTable.innerHTML = `<tr>
@@ -72,7 +111,6 @@ const checkEmpty = (value) => {
 
 const getId = () => {
   if (localStorage.getItem("id")) {
-    //check if id exists on the local storage
     let current = Number(localStorage.getItem("id"));
     localStorage.setItem("id", JSON.stringify(current + 1));
     return current;
@@ -82,7 +120,7 @@ const getId = () => {
   }
 };
 const deleteProduct = (product) => {
-  let productId = product.parentNode.parentNode.children[0].innerText; //the id of the product
+  let productId = product.parentNode.parentNode.children[0].innerText;
   const products = JSON.parse(localStorage.getItem("products"));
   const filtredProducts = products.filter((obj) => {
     if (obj) {
@@ -94,7 +132,7 @@ const deleteProduct = (product) => {
 };
 const updateProduct = (product) => {
   mode = "update";
-  let productId = product.parentNode.parentNode.children[0].innerText; //the id of the product
+  let productId = product.parentNode.parentNode.children[0].innerText;
   idForUpdating = productId;
   const products = JSON.parse(localStorage.getItem("products"));
   const specefiedProduct = products.filter((obj) => {
@@ -105,7 +143,6 @@ const updateProduct = (product) => {
 
   createAndUpdateBtn.innerText = "Update";
   modeLabel.innerText = "(Update Mode)";
-  //render all the obj value in the input fields
   title.value = specefiedProduct.title;
   price.value = specefiedProduct.price;
   taxes.value = specefiedProduct.taxes;
@@ -113,6 +150,11 @@ const updateProduct = (product) => {
   ads.value = specefiedProduct.ads;
   discount.value = specefiedProduct.discount;
   //move the scroll position up
+  window.scroll({
+    top: 0,
+    left: 0,
+    behavior: "smooth",
+  });
 };
 
 // event listeners
@@ -160,7 +202,7 @@ ads.onkeyup = () => {
     !isNaN(price.value) &&
     !isNaN(taxes.value) &&
     !isNaN(ads.value) &&
-    price.value != "" 
+    price.value != ""
   ) {
     totalPrice =
       Number(price.value) +
@@ -224,7 +266,6 @@ createAndUpdateBtn.onclick = () => {
     if (check === true) {
       let oldProducts = JSON.parse(localStorage.getItem("products"));
       let newProducts = [].concat(oldProducts);
-      //save the values into an object with the id and evreything
       for (let i = 0; i < Number(count.value); i++) {
         newProducts = newProducts.concat({
           id: getId(),
@@ -237,7 +278,7 @@ createAndUpdateBtn.onclick = () => {
           total: totalPrice,
         });
       }
-      localStorage.setItem("products", JSON.stringify(newProducts)); //saves the new products in the local storage
+      localStorage.setItem("products", JSON.stringify(newProducts));
     }
     renderProducts();
     clearInputFields();
@@ -272,7 +313,6 @@ createAndUpdateBtn.onclick = () => {
     localStorage.setItem("products", JSON.stringify(changedProducts));
     renderProducts();
     clearInputFields();
-    //here u will save the updates
     mode = "create";
   }
 };
@@ -281,4 +321,69 @@ deleteAllBtn.onclick = () => {
   localStorage.clear();
   renderProducts();
   clearInputFields();
+  mode = "create";
+  createAndUpdateBtn.innerText = "Create";
+  modeLabel.innerText = "(Create Mode)";
+};
+
+searchField.onkeyup = () => {
+  const products = JSON.parse(localStorage.getItem("products"));
+  const searchText = searchField.value;
+  localStorage.setItem(
+    "productsFromSearch",
+    JSON.stringify(search(products, searchMode, searchField.value))
+  );
+  renderProductsFromSearch();
+  console.log(search(products, searchMode, searchField.value));
+};
+searchByTitleBtn.onclick = () => {
+  searchMode = "title";
+  searchField.placeholder = "search by title";
+  if (searchField.value != "") {
+    const products = JSON.parse(localStorage.getItem("products"));
+
+    localStorage.setItem(
+      "productsFromSearch",
+      JSON.stringify(search(products, searchMode, searchField.value))
+    );
+    renderProductsFromSearch();
+    console.log("should change");
+  } else {
+    renderProducts();
+  }
+};
+searchByCategoryBtn.onclick = () => {
+  searchMode = "category";
+  searchField.placeholder = "search by category";
+  if (searchField.value != "") {
+    const products = JSON.parse(localStorage.getItem("products"));
+
+    localStorage.setItem(
+      "productsFromSearch",
+      JSON.stringify(search(products, searchMode, searchField.value))
+    );
+    renderProductsFromSearch();
+    console.log("should change");
+  } else {
+    renderProducts();
+  }
+};
+
+const search = (arr, searchUnit, searchText) => {
+  const match = (element, text) => {
+    for (let i = 0; i < text.length; i++) {
+      if (element.indexOf(text[i]) == -1) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  return arr.filter((element) => {
+    if (element) {
+      if (match(element[searchUnit], searchText)) {
+        return element;
+      }
+    }
+  });
 };
