@@ -260,3 +260,29 @@ button:hover {
   font-size: 25px;
   letter-spacing: 1.5px;
 }
+.screen-warning {
+  display: none;
+}
+@media screen and (max-width: 1150px) {
+  .wrapper {
+  }
+  body {
+    padding: 30px;
+  }
+  .screen-warning {
+  }
+}
+@media screen and (max-width: 1050px) {
+  .wrapper {
+    display: none;
+  }
+  body {
+    display: grid;
+    place-items: center;
+    padding: 30px;
+    height: 100vh;
+  }
+  .screen-warning {
+    display: inline;
+  }
+}
