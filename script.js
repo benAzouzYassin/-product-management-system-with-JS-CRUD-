@@ -212,6 +212,7 @@ taxes.onkeyup = () => {
       Number(taxes.value) +
       Number(ads.value) -
       Number(discount.value);
+
     total.innerText = totalPrice;
   }
 };
@@ -231,7 +232,7 @@ ads.onkeyup = () => {
   }
 };
 discount.onkeyup = () => {
-  if (!isNaN(discount.value) && discount.value != "") {
+  if (!isNaN(discount.value) && discount.value != "" && price.value != "") {
     totalPrice =
       Number(price.value) +
       Number(taxes.value) +
@@ -245,7 +246,7 @@ createAndUpdateBtn.onclick = () => {
   if (mode == "create") {
     let check = true;
     if (isNaN(price.value)) {
-      alert("price be a number");
+      alert("price should be a number");
       check = false;
     }
     if (isNaN(taxes.value)) {
